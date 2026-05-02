@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Cruise OS Elite</title>
+
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<style>
+body{margin:0;font-family:Arial;background:#0f0f0f;color:#fff}
+header{background:#111;padding:14px;text-align:center}
+.container{padding:12px}
+
+.card{
+background:#1c1c1c;
+padding:15px;
+border-radius:12px;
+margin-bottom:10px;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:8px;
+border:0;
+border-radius:10px;
+background:#fff;
+color:#000;
+font-weight:bold;
+}
+
+.small{color:#aaa;font-size:12px}
+
+.banner{
+background:#2e7d32;
+padding:10px;
+border-radius:10px;
+font-weight:bold;
+margin:10px 0;
+}
+
+.warning{
+background:#b71c1c;
+padding:10px;
+border-radius:10px;
+font-weight:bold;
+margin:10px 0;
+}
+
+#map{
+height:250px;
+border-radius:12px;
+margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>🚢 Cruise OS ELITE</h2>
+<p class="small">Safety • Energy • Navigation • Control</p>
+</header>
+
+<div class="container">
+
+<div class="card" id="app">
+<h3>Select Port</h3>
+<p class="small">Elite decision system active</p>
+</div>
+
+<button onclick="openPort(0)">Palma</button>
+<button onclick="openPort(1)">Ibiza</button>
+<button onclick="openPort(2)">Valencia</button>
+<button onclick="openPort(3)">Sea Day</button>
+<button onclick="openPort(4)">La Spezia</button>
+<button onclick="openPort(5)">Rome</button>
+<button onclick="openPort(6)">Savona</button>
+
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+
+const ship = {
+0:[39.55,2.65],
+1:[38.91,1.42],
+2:[39.46,-0.32],
+3:[0,0],
+4:[44.10,9.82],
+5:[41.90,12.48],
+6:[44.30,8.46]
+};
+
+const data = [
+{
+name:"Palma",
+risk:2,
+energy:+2,
+time:"10:00 → 22:00",
+plan:"Old town + café + sunset",
+food:["La Bodeguilla","Ca'n Joan","Ombu"]
+},
+{
+name:"Ibiza",
+risk:5,
+energy:-3,
+time:"23:00 → 01:30",
+plan:"Party OR stay onboard (recommended)",
+food:["Hostal La Torre","Can Terra"]
+},
+{
+name:"Valencia",
+risk:2,
+energy:+1,
+time:"09:00 → 17:00",
+plan:"Old town + paella",
+food:["Casa Carmela","La Pepica"]
+},
+{
+name:"Sea Day",
+risk:0,
+energy:+5,
+time:"All day",
+plan:"Recovery only",
+food:["Buffet","Main dining"]
+},
+{
+name:"La Spezia",
+risk:4,
+energy:-2,
+time:"08:00 → 19:00",
+plan:"Max 2 Cinque Terre villages",
+food:["Focaccia spots","Il Papeoto"]
+},
+{
+name:"Rome",
+risk:5,
+energy:-4,
+time:"08:00 → 18:30",
+plan:"Pantheon + Navona ONLY",
+food:["Tazza d’Oro","Da Enzo"]
+},
+{
+name:"Savona",
+risk:1,
+energy:+3,
+time:"08:30 → 16:30",
+plan:"Light walk + coffee",
+food:["Farine","Caffè Savona"]
+}
+];
+
+let map;
+
+function openPort(i){
+
+const p = data[i];
+
+let energyLevel =
+p.energy > 2 ? "🟢 Energy boost day"
+: p.energy < 0 ? "🔴 Energy drain day"
+: "🟡 Neutral day";
+
+let riskLevel =
+p.risk >= 4 ? "⚠️ High logistics risk"
+: "🟢 Safe port";
+
+document.getElementById("app").innerHTML = `
+<h2>${p.name}</h2>
+
+<div class="banner">${energyLevel}</div>
+<div class="warning">${riskLevel}</div>
+
+<p><b>Time:</b> ${p.time}</p>
+
+<p>${p.plan}</p>
+
+<div id="map"></div>
+
+<button onclick="routeToShip(${i})">🧭 Return to ship</button>
+
+<h4>🍴 Best food</h4>
+<ul>${p.food.map(f=>`<li>${f}</li>`).join("")}</ul>
+`;
+
+setTimeout(()=>initMap(i),100);
+}
+
+function initMap(i){
+
+if(map) map.remove();
+
+map = L.map('map').setView(ship[i], 13);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+attribution:'© OpenStreetMap'
+}).addTo(map);
+
+L.marker(ship[i]).addTo(map)
+.bindPopup("🚢 Ship location")
+.openPopup();
+}
+
+function routeToShip(i){
+const [lat,lng]=ship[i];
+window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`,'_blank');
+}
+
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+navigator.serviceWorker.register('sw.js');
+}
+</script>
+
+</body>
+</html>
