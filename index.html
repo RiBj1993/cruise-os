@@ -52,7 +52,20 @@ main{display:grid;grid-template-columns:1fr;gap:18px;padding:18px;max-width:1200
 .button:hover{background:#4bb2ff;transform:translateY(-1px);}
 .button.secondary{background:#333;color:#f1f1f1;}
 .footer{padding:18px;text-align:center;color:var(--muted);}
-@media(max-width:800px){.detail .top{grid-template-columns:1fr;} .hero .grid{grid-template-columns:1fr;} .grid-2{grid-template-columns:1fr;} }
+@media(max-width:800px){
+  body{padding:0 10px;}
+  .detail .top{grid-template-columns:1fr;}
+  .hero .grid{grid-template-columns:1fr;}
+  .grid-2{grid-template-columns:1fr;}
+  .button-group{flex-direction:column;}
+  .button{width:100%;}
+  .card-head h3{font-size:1.1rem;}
+  .card{border-radius:18px;}
+  .section{padding:14px;}
+  .detail .top img{min-height:200px;}
+  .section ul{padding-left:14px;}
+  .footer{padding:14px;}
+}
 </style>
 </head>
 <body>
@@ -73,6 +86,16 @@ main{display:grid;grid-template-columns:1fr;gap:18px;padding:18px;max-width:1200
       </div>
     </div>
   </section>
+  <section class="section">
+    <h3>Sommaire rapide</h3>
+    <ul>
+      <li><strong>Palma :</strong> vieille ville, café & marche tranquille.</li>
+      <li><strong>Ibiza :</strong> très fatiguant, juste un verre ou coucher de soleil.</li>
+      <li><strong>Valence :</strong> marché ou art moderne, une seule chose suffit.</li>
+      <li><strong>La Spezia :</strong> un village ou une pause au port, pas plusieurs villages.</li>
+      <li><strong>Rome :</strong> simple, rapide, pas de course folle.</li>
+    </ul>
+  </section>
   <section class="port-list" id="home"></section>
   <section class="detail" id="detail">
     <div class="top">
@@ -84,7 +107,7 @@ main{display:grid;grid-template-columns:1fr;gap:18px;padding:18px;max-width:1200
     </div>
     <div class="button-group">
       <a id="map" class="button" target="_blank">Ouvrir la carte</a>
-      <button class="button secondary" onclick="downloadSummary()">Télécharger résumé</button>
+      <button class="button secondary" onclick="downloadSummary()">Télécharger tout le résumé</button>
       <button class="button secondary" onclick="back()">Retour</button>
     </div>
     <div class="section">
@@ -383,14 +406,32 @@ function openPort(key){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function downloadSummary(){
-  const p=ports[currentPortKey]||ports.global;
-  const text = `Résumé pour ${p.title}\n\n${p.desc}\n\nPlan optimisé:\n${p.plan.replace(/\n/g,'\n')}
-\nAutres activités:\n${p.options && p.options.length ? p.options.map(o=>`- ${o.name}`).join('\n') : 'Aucune liste d\'activités.'}\n\nBudget: ${p.budget}\n\nRisques: ${p.risks}`;
+  const allKeys=Object.keys(ports);
+  const lines=[];
+  allKeys.forEach(key=>{
+    const p=ports[key];
+    lines.push(`===== ${p.title} =====`);
+    lines.push(p.desc);
+    lines.push('');
+    lines.push('Plan optimisé:');
+    lines.push(p.plan ? p.plan.replace(/\n/g,'\n') : 'Aucune information.');
+    lines.push('');
+    lines.push('À savoir:');
+    lines.push(p.strategy || 'Aucune information.');
+    lines.push('');
+    lines.push('Autres activités:');
+    lines.push(p.options && p.options.length ? p.options.map(o=>`- ${o.name}`).join('\n') : 'Aucune activité listée.');
+    lines.push('');
+    lines.push(`Budget: ${p.budget || 'Non précisé'}`);
+    lines.push(`Risques: ${p.risks || 'Non précisé'}`);
+    lines.push('');
+  });
+  const text = lines.join('\n');
   const blob=new Blob([text],{type:'text/plain;charset=utf-8'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
   a.href=url;
-  a.download=`resume_${p.title.replace(/[^a-zA-Z0-9]/g,'_')}.txt`;
+  a.download='resume_croisiere_tous_ports.txt';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
