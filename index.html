@@ -400,7 +400,10 @@ function openPort(key){
   detail.classList.add('active');
   document.getElementById('title').innerText=p.title;
   document.getElementById('desc').innerText=p.desc;
-  document.getElementById('image').src=p.image;
+  const img=document.getElementById('image');
+  img.alt = `Photo du port de ${p.title}`;
+  img.src = p.image || 'https://images.unsplash.com/photo-1493558103817-58b2924bce98?auto=format&fit=crop&w=900&q=80';
+  img.onerror = () => { img.src = 'https://images.unsplash.com/photo-1493558103817-58b2924bce98?auto=format&fit=crop&w=900&q=80'; };
   document.getElementById('map').href=p.map;
   fields.forEach(name=>document.getElementById(name).innerHTML=renderHtml(p[name]||'&mdash;'));
   const tickets=document.getElementById('tickets');
@@ -411,7 +414,7 @@ function openPort(key){
   options.innerHTML=p.options && p.options.length ? p.options.map(o=>`<li><a href="${o.href}" target="_blank">${o.name}</a></li>`).join('') : '<li>Aucune autre activité listée.</li>';
   const reserve=document.getElementById('reserve');
   reserve.innerHTML=p.tickets && p.tickets.length ? p.tickets.map(t=>`<li><a href="${t.href}" target="_blank">${t.label}</a> — ${t.price}</li>`).join('') : '<li>Aucune réservation urgente nécessaire.</li>';
-  window.scrollTo({top:0,behavior:'smooth'});
+  detail.scrollIntoView({behavior:'smooth', block:'start'});
 }
 function downloadSummary(){
   const allKeys=Object.keys(ports);
