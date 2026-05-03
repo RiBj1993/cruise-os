@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Cruise OS</title>
+<title>Cruise OS v2</title>
 
 <style>
 body{
@@ -33,8 +33,35 @@ cursor:pointer;
 
 .hidden{display:none}
 
-h2{margin:0 0 8px 0}
+h2{margin:0 0 6px 0}
 p{color:#aaa;font-size:13px}
+
+.section{
+background:#151515;
+padding:12px;
+border-radius:12px;
+margin-top:10px;
+}
+
+.restaurant{
+background:#1c1c1c;
+padding:10px;
+border-radius:10px;
+margin-top:8px;
+cursor:pointer;
+}
+
+.badge{
+font-size:11px;
+padding:3px 8px;
+border-radius:6px;
+display:inline-block;
+margin-bottom:6px;
+}
+
+.low{background:#2e7d32}
+.med{background:#ef6c00}
+.high{background:#b71c1c}
 
 button{
 width:100%;
@@ -47,73 +74,64 @@ margin-top:10px;
 
 .back{background:#fff;color:#000}
 
-/* detail layout */
-.section{
-background:#151515;
-padding:12px;
-border-radius:12px;
-margin-top:10px;
+img{
+width:100%;
+border-radius:10px;
+margin-top:8px;
 }
-
-a{color:#4fc3f7;text-decoration:none}
 </style>
 </head>
 
 <body>
 
-<header>🚢 Cruise OS</header>
+<header>🚢 Cruise OS v2 — Execution System</header>
 
 <!-- HOME -->
 <div id="home" class="container">
 
 <div class="card" onclick="openPort('palma')">
 <h2>Palma</h2>
-<p>Old town • cafés • beaches</p>
+<p>Old town • cafés • beach • relaxed</p>
 </div>
 
 <div class="card" onclick="openPort('valencia')">
 <h2>Valencia</h2>
-<p>Paella • City of Arts • old town</p>
+<p>Paella • City of Arts • walking city</p>
 </div>
 
 <div class="card" onclick="openPort('rome')">
 <h2>Rome</h2>
-<p>Colosseum • Vatican • history</p>
+<p>Colosseum • Vatican • high intensity</p>
 </div>
 
 <div class="card" onclick="openPort('laspezia')">
 <h2>La Spezia</h2>
-<p>Cinque Terre • trains • villages</p>
+<p>Cinque Terre • trains • risk-managed day</p>
 </div>
 
 </div>
 
-<!-- DETAIL VIEW -->
+<!-- DETAIL -->
 <div id="detail" class="container hidden">
 
-<button class="back" onclick="backHome()">← Back</button>
+<button class="back" onclick="back()">← Back</button>
 
 <h2 id="title"></h2>
 <p id="desc"></p>
 
 <div class="section">
-<h3>🍽 Recommended Food</h3>
-<p id="food"></p>
+<h3>🗺 Map</h3>
+<iframe id="map" width="100%" height="200"></iframe>
 </div>
 
 <div class="section">
-<h3>🗺 Maps</h3>
-<a id="map" target="_blank">Open Google Maps</a>
+<h3>🍽 Restaurants</h3>
+<div id="restaurants"></div>
 </div>
 
 <div class="section">
-<h3>🎟 Tickets</h3>
-<a id="ticket" target="_blank">Buy / View Tickets</a>
-</div>
-
-<div class="section">
-<h3>⏱ Timing Plan</h3>
-<p id="time"></p>
+<h3>⏱ Timing + Safety</h3>
+<p id="timing"></p>
 </div>
 
 </div>
@@ -124,65 +142,85 @@ const data = {
 
 palma:{
 title:"Palma de Mallorca",
-desc:"Relaxed port with old town + cafés + beach options.",
-food:"Ca'n Joan de S'Aigo (pastries) • La Bodeguilla (tapas)",
-map:"https://www.google.com/maps/search/palma+old+town",
-ticket:"https://tickets-viator.com/palma",
-time:"09:30 leave → 13:30 return buffer 2h minimum"
+desc:"Relaxed port: old town + cafés + optional beach.",
+map:"https://www.google.com/maps?q=Palma+old+town&output=embed",
+timing:"Leave 09:30 → Return latest 20:00 (2h buffer required)",
+restaurants:[
+{name:"Ca’n Joan de S’Aigo",type:"low",desc:"Traditional pastries + café"},
+{name:"La Bodeguilla",type:"med",desc:"Best tapas in old town"},
+{name:"Mercat de l’Olivar",type:"low",desc:"Food market, safe variety"}
+]
 },
 
 valencia:{
 title:"Valencia",
-desc:"Balanced day: food + architecture + walking.",
-food:"Casa Carmela (paella) • Mercat Central (local food)",
-map:"https://www.google.com/maps/search/valencia+city+of+arts",
-ticket:"https://tickets-viator.com/valencia",
-time:"09:00 leave → 14:30 return"
+desc:"Balanced cultural + food day.",
+map:"https://www.google.com/maps?q=Valencia+City+of+Arts&output=embed",
+timing:"Leave 09:00 → Return 15:30 (moderate buffer)",
+restaurants:[
+{name:"Casa Carmela",type:"high",desc:"Authentic wood paella"},
+{name:"La Pepica",type:"med",desc:"Beach paella classic"},
+{name:"Mercado Central",type:"low",desc:"Fast food stalls"}
+]
 },
 
 rome:{
 title:"Rome",
-desc:"High intensity. Only 2–3 major stops possible.",
-food:"Armando al Pantheon • Trastevere pasta",
-map:"https://www.google.com/maps/search/rome+colosseum",
-ticket:"https://tickets-viator.com/rome-colosseum",
-time:"07:30 leave → 15:30 strict return buffer"
+desc:"High risk intensity day — plan strictly.",
+map:"https://www.google.com/maps?q=Colosseum+Rome&output=embed",
+timing:"Leave 07:30 → MUST return 15:30 max (strict buffer)",
+restaurants:[
+{name:"Armando al Pantheon",type:"high",desc:"Best carbonara"},
+{name:"Trastevere local spots",type:"med",desc:"Authentic Roman food"},
+{name:"Sant’Eustachio Café",type:"low",desc:"Quick espresso stop"}
+]
 },
 
 laspezia:{
 title:"La Spezia / Cinque Terre",
-desc:"Train-based logistics. Risk of delays.",
-food:"Seafood cones Monterosso • Vernazza restaurants",
-map:"https://www.google.com/maps/search/cinque+terre",
-ticket:"https://www.italiarail.com/cinque-terre",
-time:"08:30 leave → 13:30 return (NO RISK BUFFER NEEDED)"
+desc:"Train-based logistics — delays possible.",
+map:"https://www.google.com/maps?q=Cinque+Terre&output=embed",
+timing:"Leave 08:30 → Return 13:30 (low risk tolerance)",
+restaurants:[
+{name:"Monterosso seafood cones",type:"low",desc:"Fast street seafood"},
+{name:"Vernazza cliff restaurants",type:"med",desc:"Scenic but slow"},
+{name:"La Spezia station cafés",type:"low",desc:"Safe fallback option"}
+]
 }
 
 };
 
-// OPEN PORT
+let current=null;
+
 function openPort(p){
-
-const d = data[p];
-
+current=p;
 document.getElementById("home").classList.add("hidden");
 document.getElementById("detail").classList.remove("hidden");
 
-document.getElementById("title").innerText = d.title;
-document.getElementById("desc").innerText = d.desc;
+const d=data[p];
 
-document.getElementById("food").innerText = d.food;
-document.getElementById("map").href = d.map;
-document.getElementById("ticket").href = d.ticket;
-document.getElementById("time").innerText = d.time;
+document.getElementById("title").innerText=d.title;
+document.getElementById("desc").innerText=d.desc;
+document.getElementById("map").src=d.map;
+document.getElementById("timing").innerText=d.timing;
 
-window.scrollTo(0,0);
+// restaurants
+let html="";
+d.restaurants.forEach(r=>{
+html+=`
+<div class="restaurant">
+<div class="badge ${r.type}">${r.type.toUpperCase()}</div>
+<b>${r.name}</b><br>
+<span style="color:#aaa;font-size:12px">${r.desc}</span>
+</div>`;
+});
+
+document.getElementById("restaurants").innerHTML=html;
 }
 
-// BACK
-function backHome(){
-document.getElementById("home").classList.remove("hidden");
+function back(){
 document.getElementById("detail").classList.add("hidden");
+document.getElementById("home").classList.remove("hidden");
 }
 
 </script>
