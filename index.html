@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cruise OS v4 — Intelligence Croisière</title>
+<title>Cruise OS v3 — Intelligence Croisière</title>
 <style>
 :root {
   color-scheme: dark;
@@ -58,18 +58,18 @@ main{display:grid;grid-template-columns:1fr;gap:18px;padding:18px;max-width:1200
 <body>
 <header>
   <h1>Intelligence Croisière Méditerranée</h1>
-  <p>Stratégie haut de gamme pour une croisière Costa calme, élégante et sans épuisement. Toutes les recommandations sont conçues pour une voyageuse solo / semi-solo qui privilégie l’expérience, la sécurité et l’énergie.</p>
+  <p>Guide simple pour une croisière Costa cool et sans stress. Tout est expliqué en français clair pour vous aider à choisir vite et bien.</p>
 </header>
 <main>
   <section class="hero">
     <div class="grid">
       <div class="card">
-        <h2>Diagnostic stratégique</h2>
-        <p>Itinéraire riche mais potentiellement fatigant. Les points forts sont la diversité des ambiances et le jour en mer. Les risques sont Ibiza, Rome et une cadence logistique trop serrée.</p>
+        <h2>Pourquoi ce guide</h2>
+        <p>Le trajet est beau mais peut fatiguer. Ce guide vous dit ce qui est facile, sûr et vraiment sympa.</p>
       </div>
       <div class="card">
-        <h2>Objectif principal</h2>
-        <p>Limiter les décisions, préserver le sommeil, choisir quelques moments forts et refuser les attrapes-touristes qui détruisent la qualité émotionnelle.</p>
+        <h2>Votre bonne route</h2>
+        <p>Choisissez peu de choses, gardez de l’énergie, et évitez les pièges à touristes.</p>
       </div>
     </div>
   </section>
@@ -84,10 +84,11 @@ main{display:grid;grid-template-columns:1fr;gap:18px;padding:18px;max-width:1200
     </div>
     <div class="button-group">
       <a id="map" class="button" target="_blank">Ouvrir la carte</a>
+      <button class="button secondary" onclick="downloadSummary()">Télécharger résumé</button>
       <button class="button secondary" onclick="back()">Retour</button>
     </div>
     <div class="section">
-      <h3>Résumé stratégique</h3>
+      <h3>À savoir</h3>
       <div id="strategy"></div>
     </div>
     <div class="grid-2">
@@ -96,19 +97,23 @@ main{display:grid;grid-template-columns:1fr;gap:18px;padding:18px;max-width:1200
         <div id="plan"></div>
       </div>
       <div class="section">
-        <h3>Conseils de logistique</h3>
+        <h3>Comment y aller</h3>
         <div id="logistics"></div>
       </div>
     </div>
     <div class="grid-2">
       <div class="section">
-        <h3>Retour</h3>
+        <h3>Heure de retour</h3>
         <div id="returns"></div>
       </div>
       <div class="section">
-        <h3>Sécurité femme solo</h3>
+        <h3>Sécurité</h3>
         <div id="safety"></div>
       </div>
+    </div>
+    <div class="section">
+      <h3>Autres activités</h3>
+      <ul id="options"></ul>
     </div>
     <div class="grid-2">
       <div class="section">
@@ -116,7 +121,7 @@ main{display:grid;grid-template-columns:1fr;gap:18px;padding:18px;max-width:1200
         <ul id="tickets"></ul>
       </div>
       <div class="section">
-        <h3>Restaurants intelligents</h3>
+        <h3>Restaurants</h3>
         <ul id="food"></ul>
       </div>
     </div>
@@ -131,7 +136,7 @@ main{display:grid;grid-template-columns:1fr;gap:18px;padding:18px;max-width:1200
       </div>
     </div>
     <div class="section">
-      <h3>Analyse rapide</h3>
+      <h3>En bref</h3>
       <p id="quick"></p>
     </div>
   </section>
@@ -157,6 +162,10 @@ const ports = {
     budget: "Répartissez 40 à 80 € par journée forte pour nourriture, transport et ticket essentiel.",
     risks: "Fatigue cumulative, retards de train, nuits courtes, surcharge émotionnelle, et attrapes-touristes." ,
     quick: "Soyez stratégique : ignorez le bruit et concentrez-vous sur des expériences ayant du sens pour vous.",
+    options: [
+      {name: "Se reposer sur le pont du navire", href: "https://www.google.com/search?q=journ%C3%A9e+de+mer+repos"},
+      {name: "Choisir 2 activities faciles", href: "https://www.google.com/search?q=tranquille+croisi%C3%A8re+activit%C3%A9s"}
+    ],
     map: "https://www.google.com/maps/"
   },
   palma: {
@@ -179,6 +188,11 @@ const ports = {
     budget: "€35-€60.",
     risks: "Surcharge de tourisme, chaleur, et faux restaurants autour de la cathédrale.",
     quick: "Ne cherchez pas à cocher tout le vieux Palma. Une seule rue charmante suffit.",
+    options: [
+      {name: "Balade dans la vieille ville", href: "https://www.google.com/search?q=vieille+ville+palma"},
+      {name: "Café face à la mer à Portixol", href: "https://www.google.com/search?q=portixol+palma+caf%C3%A9"},
+      {name: "Pause au Parc de la Mar", href: "https://www.google.com/search?q=parc+de+la+mar"}
+    ],
     map: "https://www.google.com/maps/search/Palma+de+Mallorca+old+town"
   },
   ibiza: {
@@ -199,6 +213,11 @@ const ports = {
     budget: "Variable ; le véritable coût est l’impact sur le lendemain.",
     risks: "Sommeil perdu, retards, coup de fatigue, pickpockets, et surcharge émotionnelle.",
     quick: "Le plus stratégique est de ne pas y aller si votre objectif principal est la qualité du voyage.",
+    options: [
+      {name: "Balade à Dalt Vila", href: "https://www.google.com/search?q=Dalt+Vila+Ibiza"},
+      {name: "Coucher de soleil à la plage", href: "https://www.google.com/search?q=coucher+de+soleil+Ibiza"},
+      {name: "Dîner calme près du port", href: "https://www.google.com/search?q=restaurant+Ibiza+quiet"}
+    ],
     map: "https://www.google.com/maps/search/Ibiza+Bay"
   },
   valencia: {
@@ -221,6 +240,11 @@ const ports = {
     budget: "€45-€85.",
     risks: "Trop vouloir faire plusieurs quartiers, chaleur, et transports de retour imprécis.",
     quick: "Une seule grande expérience (marché ou art moderne) vaut mieux que trois demi-expériences.",
+    options: [
+      {name: "Visite du Mercado Central", href: "https://www.google.com/search?q=Mercado+Central+Valencia"},
+      {name: "Promenade dans le parc du Turia", href: "https://www.google.com/search?q=Jard%C3%ADn+del+Turia"},
+      {name: "Pause sur la plage de Malvarrosa", href: "https://www.google.com/search?q=Malvarrosa+Valencia"}
+    ],
     map: "https://www.google.com/maps/search/Valencia+City+of+Arts+and+Sciences"
   },
   sea: {
@@ -239,6 +263,11 @@ const ports = {
     budget: "Faible, aucune dépense externe nécessaire.",
     risks: "Trop d’options internes, perte de récupération à cause de choix inutiles.",
     quick: "Un jour de mer bien utilisé est plus précieux qu’une journée port surchargée.",
+    options: [
+      {name: "Lire au soleil sur le pont", href: "https://www.google.com/search?q=relax+cruise+deck"},
+      {name: "Yoga ou étirements légers", href: "https://www.google.com/search?q=yoga+croisi%C3%A8re"},
+      {name: "Repas léger et sieste", href: "https://www.google.com/search?q=healthy+cruise+food"}
+    ],
     map: "https://www.google.com/maps/"
   },
   laspezia: {
@@ -261,6 +290,11 @@ const ports = {
     budget: "€40-€70.",
     risks: "Retards de train, foule, et trop de villages en une journée.",
     quick: "Un seul village tranquille est plus satisfaisant que plusieurs villages pressés.",
+    options: [
+      {name: "Prendre le train pour Vernazza", href: "https://www.google.com/search?q=Vernazza+train+Cinque+Terre"},
+      {name: "Promenade le long du port", href: "https://www.google.com/search?q=La+Spezia+port+walk"},
+      {name: "Fast ferry pour Monterosso", href: "https://www.google.com/search?q=Cinque+Terre+ferry"}
+    ],
     map: "https://www.google.com/maps/search/Cinque+Terre"
   },
   rome: {
@@ -283,6 +317,11 @@ const ports = {
     budget: "€60-€100.",
     risks: "Train manqué, transit urbain, surcharge de sites, émotionnellement trop intense.",
     quick: "Le succès n’est pas d’en voir plus, mais de partir avec un bon souvenir sans panique.",
+    options: [
+      {name: "Visiter le Colisée et le Forum", href: "https://www.google.com/search?q=Colosseum+Roma"},
+      {name: "Marcher à Trastevere", href: "https://www.google.com/search?q=Trastevere+Rome"},
+      {name: "Voir la Fontaine de Trevi", href: "https://www.google.com/search?q=Fontaine+de+Trevi"}
+    ],
     map: "https://www.google.com/maps/place/Colosseum/"
   },
   savona: {
@@ -302,11 +341,17 @@ const ports = {
     budget: "€30-€50.",
     risks: "Surcharger la journée avec des déplacements internes inutiles.",
     quick: "Si vous avez l’impression d’en vouloir plus, ralentissez plutôt que d’ajouter un site.",
+    options: [
+      {name: "Promenade au port de Savone", href: "https://www.google.com/search?q=Savona+port+walk"},
+      {name: "Café local tranquille", href: "https://www.google.com/search?q=caf%C3%A9+Savona"},
+      {name: "Balade dans la vieille ville", href: "https://www.google.com/search?q=Savona+old+town"}
+    ],
     map: "https://www.google.com/maps/search/Savona+port"
   }
 };
 const home=document.getElementById('home');
 const detail=document.getElementById('detail');
+let currentPortKey='global';
 const fields=['strategy','plan','logistics','returns','safety','budget','risks','quick'];
 Object.keys(ports).forEach(key=>{
   const item=ports[key];
@@ -321,6 +366,7 @@ function renderHtml(value){
   return value.replace(/\n/g,'<br>');
 }
 function openPort(key){
+  currentPortKey=key;
   const p=ports[key];
   detail.classList.add('active');
   document.getElementById('title').innerText=p.title;
@@ -332,7 +378,23 @@ function openPort(key){
   const food=document.getElementById('food');
   tickets.innerHTML=p.tickets && p.tickets.length ? p.tickets.map(t=>`<li><a href="${t.href}" target="_blank">${t.label}</a> — ${t.price}</li>`).join('') : '<li>Aucun lien nécessaire.</li>';
   food.innerHTML=p.food && p.food.length ? p.food.map(f=>`<li><a href="${f.href}" target="_blank">${f.name}</a> — ${f.price}<br><small style="color:var(--muted)">${f.note}</small></li>`).join('') : '<li>Pas de recommandations spécifiques.</li>';
+  const options=document.getElementById('options');
+  options.innerHTML=p.options && p.options.length ? p.options.map(o=>`<li><a href="${o.href}" target="_blank">${o.name}</a></li>`).join('') : '<li>Aucune autre activité listée.</li>';
   window.scrollTo({top:0,behavior:'smooth'});
+}
+function downloadSummary(){
+  const p=ports[currentPortKey]||ports.global;
+  const text = `Résumé pour ${p.title}\n\n${p.desc}\n\nPlan optimisé:\n${p.plan.replace(/\n/g,'\n')}
+\nAutres activités:\n${p.options && p.options.length ? p.options.map(o=>`- ${o.name}`).join('\n') : 'Aucune liste d\'activités.'}\n\nBudget: ${p.budget}\n\nRisques: ${p.risks}`;
+  const blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=`resume_${p.title.replace(/[^a-zA-Z0-9]/g,'_')}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 function back(){detail.classList.remove('active');}
 </script>
