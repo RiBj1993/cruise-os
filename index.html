@@ -144,6 +144,12 @@ main{display:grid;grid-template-columns:1fr;gap:18px;padding:18px;max-width:1200
         <ul id="tickets"></ul>
       </div>
       <div class="section">
+        <h3>À réserver à l’avance</h3>
+        <ul id="reserve"></ul>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="section">
         <h3>Restaurants</h3>
         <ul id="food"></ul>
       </div>
@@ -403,6 +409,8 @@ function openPort(key){
   food.innerHTML=p.food && p.food.length ? p.food.map(f=>`<li><a href="${f.href}" target="_blank">${f.name}</a> — ${f.price}<br><small style="color:var(--muted)">${f.note}</small></li>`).join('') : '<li>Pas de recommandations spécifiques.</li>';
   const options=document.getElementById('options');
   options.innerHTML=p.options && p.options.length ? p.options.map(o=>`<li><a href="${o.href}" target="_blank">${o.name}</a></li>`).join('') : '<li>Aucune autre activité listée.</li>';
+  const reserve=document.getElementById('reserve');
+  reserve.innerHTML=p.tickets && p.tickets.length ? p.tickets.map(t=>`<li><a href="${t.href}" target="_blank">${t.label}</a> — ${t.price}</li>`).join('') : '<li>Aucune réservation urgente nécessaire.</li>';
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function downloadSummary(){
