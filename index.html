@@ -1,301 +1,340 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>Cruise OS v3 — Shore Guide</title>
-
+<title>Cruise OS v3 — Intelligence Croisière</title>
 <style>
-body{
-  margin:0;
-  font-family:system-ui, sans-serif;
-  background:#070707;
-  color:#f3f3f3;
+:root {
+  color-scheme: dark;
+  --bg:#070707;
+  --panel:#131313;
+  --panel-soft:#1c1c1c;
+  --text:#f1f1f1;
+  --muted:#9ca3af;
+  --accent:#67d0ff;
+  --accent-soft:#2d6fb8;
+  --border:#2e2e2e;
+  --danger:#e06c75;
+  --success:#22c55e;
 }
-header{
-  padding:18px 12px;
-  text-align:center;
-  font-weight:900;
-  background:linear-gradient(180deg,#111,#1a1a1a);
-  box-shadow:inset 0 -1px 0 rgba(255,255,255,.05);
-}
-.container{
-  padding:14px;
-  max-width:760px;
-  margin:0 auto;
-}
-.card{
-  background:#121212;
-  padding:16px;
-  border-radius:18px;
-  margin-bottom:14px;
-  cursor:pointer;
-  transition:transform .16s ease, background .16s ease;
-}
-.card:hover{
-  transform:translateY(-2px);
-  background:#1e1e1e;
-}
-.hidden{display:none}
-.section{
-  background:#151515;
-  padding:16px;
-  border-radius:16px;
-  margin-top:14px;
-}
-.section h3{
-  margin:0 0 10px;
-  font-size:1rem;
-}
-.section p,
-.section ul{
-  margin:0;
-  color:#d7d7d7;
-  line-height:1.6;
-}
-.section ul{
-  padding-left:20px;
-}
-a,
-a.button-link{
-  color:#67d0ff;
-  text-decoration:none;
-}
-a.button-link{
-  display:inline-block;
-  margin-top:10px;
-  background:#4fc3f7;
-  color:#000;
-  padding:10px 14px;
-  border-radius:12px;
-  font-weight:700;
-}
-a.button-link:hover{
-  background:#6ed7ff;
-}
-button{
-  width:100%;
-  padding:12px;
-  border:none;
-  border-radius:12px;
-  margin-top:12px;
-  font-weight:700;
-  background:#f1f1f1;
-  color:#000;
-  cursor:pointer;
-}
-button.back{
-  background:#222;
-  color:#fff;
-}
-.row{
-  margin-top:8px;
-  color:#b0b0b0;
-  font-size:.96rem;
-}
-.list-item{
-  margin:8px 0;
-}
-.badge{
-  display:inline-block;
-  padding:5px 10px;
-  border-radius:999px;
-  font-size:11px;
-  background:#222;
-  color:#cbd5e0;
-  margin-right:8px;
-  margin-bottom:8px;
-}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);}
+header{padding:24px 18px;text-align:center;background:linear-gradient(180deg,#111,#161616);border-bottom:1px solid rgba(255,255,255,.05);}
+header h1{margin:0;font-size:clamp(1.8rem,2.4vw,2.6rem);letter-spacing:.02em;}
+header p{margin:.7rem 0 0;color:var(--muted);line-height:1.6;max-width:760px;margin-left:auto;margin-right:auto;}
+main{display:grid;grid-template-columns:1fr;gap:18px;padding:18px;max-width:1200px;margin:0 auto;}
+.hero{display:grid;gap:16px;padding:18px;background:var(--panel);border:1px solid var(--border);border-radius:24px;}
+.hero h2{margin:0;font-size:1.4rem;}
+.hero .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.hero .card{background:var(--panel-soft);padding:14px;border-radius:18px;border:1px solid rgba(255,255,255,.05);}
+.port-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:22px;overflow:hidden;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease;}
+.card:hover{transform:translateY(-3px);box-shadow:0 20px 60px rgba(0,0,0,.24);}
+.card-head{padding:18px 18px 0;}
+.card-head h3{margin:0;font-size:1.05rem;}
+.card-head p{margin:.75rem 0 0;color:var(--muted);font-size:.95rem;line-height:1.6;}
+.card-foot{padding:0 18px 18px;display:flex;justify-content:space-between;align-items:center;font-size:.88rem;color:var(--muted);}
+.detail{display:none;flex-direction:column;gap:18px;padding:18px;background:var(--panel);border:1px solid var(--border);border-radius:24px;}
+.detail.active{display:flex;}
+.detail .top{display:grid;grid-template-columns:1fr 320px;gap:18px;}
+.detail .top img{width:100%;height:100%;object-fit:cover;border-radius:20px;min-height:250px;}
+.detail h2{margin:0;font-size:1.7rem;}
+.detail p{margin:.9rem 0 0;line-height:1.7;color:var(--muted);}
+.section{background:var(--panel-soft);padding:18px;border-radius:20px;border:1px solid rgba(255,255,255,.05);}
+.section h3{margin:0 0 12px;font-size:1.05rem;}
+.section p, .section li{line-height:1.75;}
+.section ul{padding-left:18px;margin:0;}
+.section li{margin-bottom:.7rem;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.button-group{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;}
+.button{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border:none;border-radius:14px;font-weight:700;text-decoration:none;color:#000;background:var(--accent);transition:transform .16s ease,background .16s ease;}
+.button:hover{background:#4bb2ff;transform:translateY(-1px);}
+.button.secondary{background:#333;color:#f1f1f1;}
+.footer{padding:18px;text-align:center;color:var(--muted);}
+@media(max-width:800px){.detail .top{grid-template-columns:1fr;} .hero .grid{grid-template-columns:1fr;} .grid-2{grid-template-columns:1fr;} }
 </style>
 </head>
-
 <body>
-
-<header>🚢 Cruise OS v3 — Shore Guide</header>
-
-<div id="home" class="container"></div>
-
-<div id="detail" class="container hidden">
-
-<button class="back" onclick="back()">← Back</button>
-
-<h2 id="title"></h2>
-<p id="desc"></p>
-
-<div class="section">
-<h3>✨ What to do</h3>
-<p id="activities"></p>
-</div>
-
-<div class="section">
-<h3>⏱ Timeline</h3>
-<p id="timeline"></p>
-</div>
-
-<div class="section">
-<h3>🚆 Transport</h3>
-<p id="transport"></p>
-</div>
-
-<div class="section">
-<h3>🎫 Tickets & links</h3>
-<ul id="tickets" class="list"></ul>
-</div>
-
-<div class="section">
-<h3>🍽 Recommended restaurants</h3>
-<ul id="food" class="list"></ul>
-</div>
-
-<div class="section">
-<h3>💰 Budget</h3>
-<p id="budget"></p>
-</div>
-
-<div class="section">
-<h3>⚠ Tip</h3>
-<p id="safety"></p>
-</div>
-
-<div class="section">
-<h3>🗺 Map</h3>
-<a id="map" class="button-link" target="_blank">Open location in Google Maps</a>
-</div>
-
-</div>
-
+<header>
+  <h1>Intelligence Croisière Méditerranée</h1>
+  <p>Stratégie haut de gamme pour une croisière Costa calme, élégante et sans épuisement. Toutes les recommandations sont conçues pour une voyageuse solo / semi-solo qui privilégie l’expérience, la sécurité et l’énergie.</p>
+</header>
+<main>
+  <section class="hero">
+    <div class="grid">
+      <div class="card">
+        <h2>Diagnostic stratégique</h2>
+        <p>Itinéraire riche mais potentiellement fatigant. Les points forts sont la diversité des ambiances et le jour en mer. Les risques sont Ibiza, Rome et une cadence logistique trop serrée.</p>
+      </div>
+      <div class="card">
+        <h2>Objectif principal</h2>
+        <p>Limiter les décisions, préserver le sommeil, choisir quelques moments forts et refuser les attrapes-touristes qui détruisent la qualité émotionnelle.</p>
+      </div>
+    </div>
+  </section>
+  <section class="port-list" id="home"></section>
+  <section class="detail" id="detail">
+    <div class="top">
+      <div>
+        <h2 id="title"></h2>
+        <p id="desc"></p>
+      </div>
+      <img id="image" src="" alt="Photo du port">
+    </div>
+    <div class="button-group">
+      <a id="map" class="button" target="_blank">Ouvrir la carte</a>
+      <button class="button secondary" onclick="back()">Retour</button>
+    </div>
+    <div class="section">
+      <h3>Résumé stratégique</h3>
+      <div id="strategy"></div>
+    </div>
+    <div class="grid-2">
+      <div class="section">
+        <h3>Plan optimisé</h3>
+        <div id="plan"></div>
+      </div>
+      <div class="section">
+        <h3>Conseils de logistique</h3>
+        <div id="logistics"></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="section">
+        <h3>Retour</h3>
+        <div id="returns"></div>
+      </div>
+      <div class="section">
+        <h3>Sécurité femme solo</h3>
+        <div id="safety"></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="section">
+        <h3>Tickets et liens</h3>
+        <ul id="tickets"></ul>
+      </div>
+      <div class="section">
+        <h3>Restaurants intelligents</h3>
+        <ul id="food"></ul>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="section">
+        <h3>Budget et énergie</h3>
+        <div id="budget"></div>
+      </div>
+      <div class="section">
+        <h3>Risques clés</h3>
+        <div id="risks"></div>
+      </div>
+    </div>
+    <div class="section">
+      <h3>Analyse rapide</h3>
+      <p id="quick"></p>
+    </div>
+  </section>
+  <div class="footer">Conçu pour limiter le stress et maximiser les moments mémorables sans épuisement.</div>
+</main>
 <script>
 const ports = {
+  global: {
+    title: "Stratégie globale" ,
+    desc: "Itinéraire Costa Marseille - Palma - Ibiza - Valence - Jour de mer - La Spezia - Rome - Savone - Marseille.",
+    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80",
+    strategy: "Analyse stratégique : points forts atmosphériques, pièges logistiques, fatigue cumulative, et recommandations pour chaque segment.",
+    plan: "- Ne transformez pas Ibiza en priorité obligatoire.\n- Utilisez le jour de mer comme reset réel.\n- Choisissez une seule expérience forte par port.\n- Retournez au navire avec au moins 90 minutes de marge.",
+    logistics: "La crise logistique survient avec Rome et Cinque Terre. Ces journées requièrent des plans précis, des tickets préachetés et aucune surcharge d’options.",
+    returns: "Palma : 17h. Valence : 16h. La Spezia : 16h. Rome : 16h30. Savone : 15h30.",
+    safety: "Prioriser les zones principales, éviter les ruelles isolées le soir, et conserver un petit sac sécurisé pour documents et téléphone.",
+    tickets: [
+      {label: "Guide général de décision", href: "https://www.google.com", price: "Analyse incluse"}
+    ],
+    food: [
+      {name: "Cafés tranquilles + snacks locaux", href: "https://www.google.com/search?q=caf%C3%A9+calme+port+europ%C3%A9en", price: "€10-€30", note: "Privilégiez l’énergie stable plutôt que le grand repas."}
+    ],
+    budget: "Répartissez 40 à 80 € par journée forte pour nourriture, transport et ticket essentiel.",
+    risks: "Fatigue cumulative, retards de train, nuits courtes, surcharge émotionnelle, et attrapes-touristes." ,
+    quick: "Soyez stratégique : ignorez le bruit et concentrez-vous sur des expériences ayant du sens pour vous.",
+    map: "https://www.google.com/maps/"
+  },
   palma: {
     title: "Palma de Mallorca",
-    desc: "Compact seaside city with cathedral views, old town cafés and a relaxed rhythm.",
-    activities: "Explore the old town, visit La Seu cathedral, walk the marina and relax at Portixol beach.",
-    timeline: "Leave port by 09:30 and target 18:30 return with a one-hour buffer.",
-    transport: "Walk 10-15 minutes to the old town. A taxi to the cathedral or beach costs €8-€12.",
+    desc: "Port méditerranéen facile, idéal pour un premier arrêt calme et élégant.",
+    image: "https://images.unsplash.com/photo-1493558103817-58b2924bce98?auto=format&fit=crop&w=900&q=80",
+    strategy: "Port de restauration. Privilégier la lenteur, le café, le vieux quartier et le jardin derrière la cathédrale.",
+    plan: "Matin : déambuler dans la vieille ville. Midi : déjeuner léger à La Bodeguilla. Après-midi : promenade à Portixol et retour avant 18h.",
+    logistics: "10-15 min à pied depuis le terminal. Transports faibles. Prioriser la marche simple.",
+    returns: "Idéal : 17h. Confortable : 18h. Limite : 19h.",
+    safety: "Zones sûres : vieille ville, port et Portixol. Méfiez-vous des taxis nocturnes spontanés.",
     tickets: [
-      {label: "La Seu Cathedral ticket", href: "https://www.catedralpalma.es/en", price: "€12"},
-      {label: "Es Baluard Museum", href: "https://www.esbaluard.org/en/", price: "€10"}
+      {label: "Cathédrale La Seu", href: "https://www.catedralpalma.es/en", price: "€12"},
+      {label: "Es Baluard", href: "https://www.esbaluard.org/en/", price: "€10"}
     ],
     food: [
-      {name: "La Bodeguilla", href: "https://www.google.com/search?q=La+Bodeguilla+Palma", price: "€18-€30", note: "Tapas and seafood in the old town."},
-      {name: "Ca'n Joan de S'Aigo", href: "https://www.google.com/search?q=Can+Joan+de+SAigo", price: "€8-€15", note: "Best for ensaimadas and hot chocolate."},
-      {name: "Ombu", href: "https://www.google.com/search?q=Ombu+Palma", price: "€20-€35", note: "Creative Mediterranean plates by the harbor."}
+      {name: "La Bodeguilla", href: "https://www.google.com/maps/place/La+Bodeguilla", price: "€18-€30", note: "Tapas locales tranquilles."},
+      {name: "Ca'n Joan de S'Aigo", href: "https://www.google.com/maps/place/Ca'n+Joan+de+S'Aigo", price: "€8-€15", note: "Pâtisserie emblématique."}
     ],
-    budget: "€35-€60 total for transport, a meal and one attraction.",
-    safety: "Low risk. Keep a two-hour buffer before departure and follow port transfer times.",
+    budget: "€35-€60.",
+    risks: "Surcharge de tourisme, chaleur, et faux restaurants autour de la cathédrale.",
+    quick: "Ne cherchez pas à cocher tout le vieux Palma. Une seule rue charmante suffit.",
     map: "https://www.google.com/maps/search/Palma+de+Mallorca+old+town"
   },
-
+  ibiza: {
+    title: "Ibiza Bay - Jungle Party Stop",
+    desc: "Arrêt nuit : le principal risque n’est pas l’expérience, c’est l’épuisement et le retour.",
+    image: "https://images.unsplash.com/photo-1527061650938-5bdf2aa0e1d0?auto=format&fit=crop&w=900&q=80",
+    strategy: "Événement fatigue. Route très risquée. Ne le faites que si votre énergie est encore intacte et si vous laissez la porte de sortie ouverte à 00h30.",
+    plan: "Soir : arrivée, un verre, puis départ avant minuit. Alternative : dîner calme à Ibiza ville et dormir tôt.",
+    logistics: "Transferts tenders + navettes nocturnes. Très haute friction. Les files et retards sont fréquents.",
+    returns: "Idéal : 00h30. Confortable : 00h00. Limite : 01h00.",
+    safety: "Évitez les promesses de taxi non officielles. Choisissez les parcours éclairés et l’entrée officielle.",
+    tickets: [
+      {label: "Club ou soirée avec couverture", href: "https://www.google.com/search?q=Ibiza+jungle+party+entrée", price: "variable"}
+    ],
+    food: [
+      {name: "Café Dj", href: "https://www.google.com/search?q=ibiza+cafe+soir", price: "€15-€25", note: "Mieux vaut une entrée légère qu’un repas lourdo."}
+    ],
+    budget: "Variable ; le véritable coût est l’impact sur le lendemain.",
+    risks: "Sommeil perdu, retards, coup de fatigue, pickpockets, et surcharge émotionnelle.",
+    quick: "Le plus stratégique est de ne pas y aller si votre objectif principal est la qualité du voyage.",
+    map: "https://www.google.com/maps/search/Ibiza+Bay"
+  },
   valencia: {
-    title: "Valencia",
-    desc: "Modern architecture, great market food and a relaxed seaside atmosphere.",
-    activities: "Visit the City of Arts and Sciences, explore Central Market, then enjoy paella near the beach.",
-    timeline: "Leave port by 09:00, return between 15:30 and 16:00 to avoid lines.",
-    transport: "Train or bus to the city center takes 20-25 minutes. Metro rides are about €2.80 each way.",
+    title: "Valence",
+    desc: "Grande ville espagnole avec une forte dualité modernité / marché local.",
+    image: "https://images.unsplash.com/photo-1542240231-30b0a244a89c?auto=format&fit=crop&w=900&q=80",
+    strategy: "Port d’équilibre. Choisir une seule atmosphère : art moderne ou marché authentique.",
+    plan: "Matin : City of Arts. Midi : Mercado Central. Après-midi : promenade dans les Jardins del Turia.",
+    logistics: "20-25 min de train ou bus. Port city : transport utile et marche raisonnable.",
+    returns: "Idéal : 15h. Confortable : 16h. Limite : 16h30.",
+    safety: "Zones sûres : City of Arts, marché et Turia. Restez vigilant aux stations et au marché.",
     tickets: [
       {label: "City of Arts & Sciences", href: "https://www.cac.es/en/home.html", price: "€10-€25"},
-      {label: "Oceanogràfic aquarium", href: "https://www.oceanografic.org/en/", price: "€30-€35"}
+      {label: "Oceanogràfic", href: "https://www.oceanografic.org/en/", price: "€30-€35"}
     ],
     food: [
-      {name: "Casa Carmela", href: "https://www.casadomela.com", price: "€25-€40", note: "Classic paella near the beach."},
-      {name: "Central Bar", href: "https://www.google.com/search?q=Central+Bar+Mercado+Central+Valencia", price: "€15-€25", note: "Tapas inside the historic market."},
-      {name: "Horchatería Santa Catalina", href: "https://www.google.com/search?q=Horchateria+Santa+Catalina", price: "€5-€10", note: "Local horchata and sweet snacks."}
+      {name: "Casa Carmela", href: "https://www.google.com/maps/place/Casa+Carmela", price: "€25-€40", note: "Paella authentique proche de la plage."},
+      {name: "Central Bar", href: "https://www.google.com/maps/place/Central+Bar+Mercado+Central", price: "€15-€25", note: "Tapas de marché."}
     ],
-    budget: "€45-€85 including transport, a meal and one main attraction.",
-    safety: "Moderate risk. Avoid late returns and keep the boarding pass visible for port access.",
+    budget: "€45-€85.",
+    risks: "Trop vouloir faire plusieurs quartiers, chaleur, et transports de retour imprécis.",
+    quick: "Une seule grande expérience (marché ou art moderne) vaut mieux que trois demi-expériences.",
     map: "https://www.google.com/maps/search/Valencia+City+of+Arts+and+Sciences"
   },
-
-  rome: {
-    title: "Rome (Civitavecchia)",
-    desc: "Iconic history in a fast-paced shore day — only if you want the big landmarks.",
-    activities: "Start at the Colosseum, walk the Roman Forum, then finish with lunch in Trastevere.",
-    timeline: "Train arrives around 08:30; be back on the 15:30 port shuttle for a safe return.",
-    transport: "Train to Roma Termini takes 1h15. Use taxis only if you fall behind schedule.",
-    tickets: [
-      {label: "Colosseum & Roman Forum", href: "https://www.coopculture.it/en/ticket_office.cfm", price: "€18-€25"},
-      {label: "Vatican Museums", href: "https://www.museivaticani.va/content/museivaticani/en.html", price: "€17-€30"}
-    ],
+  sea: {
+    title: "Jour de mer",
+    desc: "Le meilleur outil de gestion de fatigue de l’itinéraire.",
+    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80",
+    strategy: "Jour de récupération. Restez calme, hydratez-vous et réinitialisez l’horloge interne.",
+    plan: "Matinée lente, déjeuner léger, sieste, puis observation du large. Évitez les spectacles tardifs.",
+    logistics: "Aucune logistique externe. Utilisez le jour pour simplifier.",
+    returns: "Pas de retour port. Priorité : sommeil et énergie.",
+    safety: "Néant ; le principal risque est de trop stimuler votre cerveau.",
+    tickets: [],
     food: [
-      {name: "Tazza d'Oro", href: "https://www.google.com/search?q=Tazza+d'Oro+Rome", price: "€5-€12", note: "Legendary coffee near the Pantheon."},
-      {name: "Da Enzo al 29", href: "https://www.google.com/search?q=Da+Enzo+al+29+Trastevere", price: "€20-€35", note: "Classic Roman trattoria."},
-      {name: "Pastificio Guerra", href: "https://www.google.com/search?q=Pastificio+Guerra", price: "€6-€10", note: "Fast takeaway pasta by the Spanish Steps."}
+      {name: "Menu léger du navire", href: "https://www.google.com/search?q=ship+cruise+light+food", price: "inclu", note: "Privilégier protéines maigres et légumes."}
     ],
-    budget: "€60-€100 depending on train, tickets and lunch.",
-    safety: "High risk. No delay tolerance — if trains are late, take the next port shuttle immediately.",
-    map: "https://www.google.com/maps/search/Colosseum+Rome"
+    budget: "Faible, aucune dépense externe nécessaire.",
+    risks: "Trop d’options internes, perte de récupération à cause de choix inutiles.",
+    quick: "Un jour de mer bien utilisé est plus précieux qu’une journée port surchargée.",
+    map: "https://www.google.com/maps/"
   },
-
   laspezia: {
     title: "La Spezia / Cinque Terre",
-    desc: "Scenic coastal villages connected by train — great for a relaxed, photo-friendly day.",
-    activities: "Take the train to Riomaggiore, walk between a village or two, and enjoy seafood with a view.",
-    timeline: "Leave port by 08:30 and return by 13:30 to avoid afternoon train congestion.",
-    transport: "Regional train pass costs €18-€25 and covers multiple Cinque Terre stops.",
+    desc: "Port d’entrée vers des paysages vertigineux et un réseau ferroviaire exigeant.",
+    image: "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=900&q=80",
+    strategy: "Port logistique. Une seule village ou rester local est la meilleure décision.",
+    plan: "Matin : train pour Vernazza. Midi : déjeuner face au port. Après-midi : retour à La Spezia et promenade tranquille.",
+    logistics: "10 min marche vers la gare, train régional, forte dépendance aux horaires.",
+    returns: "Idéal : 15h. Confortable : 16h. Limite : 17h.",
+    safety: "Zones sûres : gare, la promenade de La Spezia, le village principal choisi. Ne pas rester après la tombée de la nuit.",
     tickets: [
-      {label: "Cinque Terre Train Pass", href: "https://www.cinqueterre.eu.com/en/cinqueterre-card-train", price: "€18-€25"},
-      {label: "Cinque Terre ferry", href: "https://www.cinqueterre.eu.com/en/boat", price: "€8-€15"}
+      {label: "Pass train Cinque Terre", href: "https://www.cinqueterre.eu.com/en/cinqueterre-card-train", price: "€18-€25"},
+      {label: "Ferry Cinque Terre", href: "https://www.cinqueterre.eu.com/en/boat", price: "€8-€15"}
     ],
     food: [
-      {name: "Panificio Mario", href: "https://www.google.com/search?q=Panificio+Mario+Manarola", price: "€6-€12", note: "Focaccia and local pastries."},
-      {name: "Belforte", href: "https://www.google.com/search?q=Belforte+Vernazza", price: "€25-€45", note: "Sea-view seafood in Vernazza."},
-      {name: "Il Pescato Cucinato", href: "https://www.google.com/search?q=Il+Pescato+Cucinato+Manarola", price: "€15-€25", note: "Quick seafood plates by the harbor."}
+      {name: "Panificio Mario", href: "https://www.google.com/maps/place/Panificio+Mario", price: "€6-€12", note: "Focaccia locale."},
+      {name: "Belforte", href: "https://www.google.com/maps/place/Belforte+Vernazza", price: "€25-€45", note: "Vue mer mémorable."}
     ],
-    budget: "€40-€70 including train pass, a meal and snacks.",
-    safety: "Medium risk. Train delays are common, so choose the earliest return train.",
+    budget: "€40-€70.",
+    risks: "Retards de train, foule, et trop de villages en une journée.",
+    quick: "Un seul village tranquille est plus satisfaisant que plusieurs villages pressés.",
     map: "https://www.google.com/maps/search/Cinque+Terre"
+  },
+  rome: {
+    title: "Rome via Civitavecchia",
+    desc: "L’option la plus dangereuse pour la fatigue, si elle n’est pas cadrée précisément.",
+    image: "https://images.unsplash.com/photo-1508051123996-69f8caf4891a?auto=format&fit=crop&w=900&q=80",
+    strategy: "Port de haute vigilance. Choisissez la simplicité et un seul lieu majeur.",
+    plan: "Matin : train vers Termini. Midi : Colisée/Forum et déjeuner à Trastevere. Retour en début d’après-midi.",
+    logistics: "1h15 de train aller, attente, transport urbain limité, stricte marge de retour.",
+    returns: "Idéal : 16h. Confortable : 17h. Limite : 17h30.",
+    safety: "Zones sûres : Colisée, Forum, Trastevere central. Restez avec des zones fréquentées et évitez les ruelles seules.",
+    tickets: [
+      {label: "Colisée + Forum", href: "https://www.coopculture.it/en/ticket_office.cfm", price: "€18-€25"},
+      {label: "Musées du Vatican", href: "https://www.museivaticani.va/content/museivaticani/en.html", price: "€17-€30"}
+    ],
+    food: [
+      {name: "Tazza d'Oro", href: "https://www.google.com/maps/place/Tazza+d'Oro", price: "€5-€12", note: "Café légendaire."},
+      {name: "Da Enzo al 29", href: "https://www.google.com/maps/place/Da+Enzo+al+29", price: "€20-€35", note: "Trattoria tranquille."}
+    ],
+    budget: "€60-€100.",
+    risks: "Train manqué, transit urbain, surcharge de sites, émotionnellement trop intense.",
+    quick: "Le succès n’est pas d’en voir plus, mais de partir avec un bon souvenir sans panique.",
+    map: "https://www.google.com/maps/place/Colosseum/"
+  },
+  savona: {
+    title: "Savone",
+    desc: "Port de stabilité, idéal pour une journée de repos actif en toute simplicité.",
+    image: "https://images.unsplash.com/photo-1526481280690-2cbe7ee81be7?auto=format&fit=crop&w=900&q=80",
+    strategy: "Port d’atmosphère calme. Promenade portuaire, cafés et un déjeuner léger.",
+    plan: "Matin : marche sur le front de mer. Midi : déjeuner dans un café local. Après-midi : retour au navire avant 15h30.",
+    logistics: "Très simple. Port et centre-ville sont proches et bien connectés à pied.",
+    returns: "Idéal : 15h30. Confortable : 16h. Limite : 16h15.",
+    safety: "Très bonne, mais restez sur les axes principaux et cherchez les lieux fréquentés.",
+    tickets: [],
+    food: [
+      {name: "Farine Savona", href: "https://www.google.com/maps/search/Farine+Savona", price: "€15-€25", note: "Café local et pâtisserie."},
+      {name: "Caffè Savona", href: "https://www.google.com/maps/search/Caffè+Savona", price: "€8-€15", note: "Ambiance détendue."}
+    ],
+    budget: "€30-€50.",
+    risks: "Surcharger la journée avec des déplacements internes inutiles.",
+    quick: "Si vous avez l’impression d’en vouloir plus, ralentissez plutôt que d’ajouter un site.",
+    map: "https://www.google.com/maps/search/Savona+port"
   }
 };
-
-const home=document.getElementById("home");
-
-Object.keys(ports).forEach(k=>{
-  const p=ports[k];
-  home.innerHTML += `
-    <div class="card" onclick="openPort('${k}')">
-      <b>${p.title}</b>
-      <div class="row">${p.desc}</div>
-    </div>`;
+const home=document.getElementById('home');
+const detail=document.getElementById('detail');
+const fields=['strategy','plan','logistics','returns','safety','budget','risks','quick'];
+Object.keys(ports).forEach(key=>{
+  const item=ports[key];
+  const card=document.createElement('article');
+  card.className='card';
+  card.innerHTML=`<div class="card-head"><h3>${item.title}</h3><p>${item.desc}</p></div><div class="card-foot">${key==='global'?'Vision générale':'Port stratégique'}</div>`;
+  card.addEventListener('click',()=>openPort(key));
+  home.appendChild(card);
 });
-
-function renderList(elementId, items, type) {
-  const container = document.getElementById(elementId);
-  if (!items || !items.length) {
-    container.innerHTML = '<li class="list-item">No details available.</li>';
-    return;
-  }
-  container.innerHTML = items.map(item => {
-    if (type === 'tickets') {
-      return `<li class="list-item"><a href="${item.href}" target="_blank">${item.label}</a> — ${item.price}</li>`;
-    }
-    return `<li class="list-item"><a href="${item.href}" target="_blank">${item.name}</a> — ${item.price}<br><small style="color:#aaa">${item.note}</small></li>`;
-  }).join('');
+function renderHtml(value){
+  if(!value) return '&mdash;';
+  return value.replace(/\n/g,'<br>');
 }
-
-function openPort(k){
-  const p=ports[k];
-
-  document.getElementById("home").classList.add("hidden");
-  document.getElementById("detail").classList.remove("hidden");
-
-  document.getElementById("title").innerText=p.title;
-  document.getElementById("desc").innerText=p.desc;
-  document.getElementById("activities").innerText=p.activities;
-  document.getElementById("timeline").innerText=p.timeline;
-  document.getElementById("transport").innerText=p.transport;
-  renderList("tickets", p.tickets, 'tickets');
-  renderList("food", p.food, 'food');
-  document.getElementById("budget").innerText=p.budget;
-  document.getElementById("safety").innerText=p.safety;
-  document.getElementById("map").href=p.map;
+function openPort(key){
+  const p=ports[key];
+  detail.classList.add('active');
+  document.getElementById('title').innerText=p.title;
+  document.getElementById('desc').innerText=p.desc;
+  document.getElementById('image').src=p.image;
+  document.getElementById('map').href=p.map;
+  fields.forEach(name=>document.getElementById(name).innerHTML=renderHtml(p[name]||'&mdash;'));
+  const tickets=document.getElementById('tickets');
+  const food=document.getElementById('food');
+  tickets.innerHTML=p.tickets && p.tickets.length ? p.tickets.map(t=>`<li><a href="${t.href}" target="_blank">${t.label}</a> — ${t.price}</li>`).join('') : '<li>Aucun lien nécessaire.</li>';
+  food.innerHTML=p.food && p.food.length ? p.food.map(f=>`<li><a href="${f.href}" target="_blank">${f.name}</a> — ${f.price}<br><small style="color:var(--muted)">${f.note}</small></li>`).join('') : '<li>Pas de recommandations spécifiques.</li>';
+  window.scrollTo({top:0,behavior:'smooth'});
 }
-
-function back(){
-  document.getElementById("detail").classList.add("hidden");
-  document.getElementById("home").classList.remove("hidden");
-}
-
+function back(){detail.classList.remove('active');}
 </script>
 </body>
 </html>
