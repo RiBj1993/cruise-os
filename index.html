@@ -4,81 +4,55 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Cruise OS Elite</title>
+<title>Cruise OS - Mediterranean</title>
 
-<link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
 <style>
-body{margin:0;font-family:Arial;background:#0f0f0f;color:#fff}
-header{background:#111;padding:14px;text-align:center}
+body{margin:0;font-family:system-ui;background:#0b0b0b;color:#fff}
+header{padding:14px;text-align:center;background:#111;font-weight:700}
 .container{padding:12px}
 
-.card{
-background:#1c1c1c;
-padding:15px;
-border-radius:12px;
-margin-bottom:10px;
-}
+.card{background:#151515;padding:12px;border-radius:14px;margin-bottom:10px}
 
 button{
 width:100%;
-padding:12px;
+padding:10px;
 margin-top:8px;
-border:0;
+border:none;
 border-radius:10px;
 background:#fff;
 color:#000;
-font-weight:bold;
+font-weight:600;
 }
+
+img{width:100%;border-radius:10px;margin-top:6px}
+
+.badge{font-size:11px;padding:4px 8px;border-radius:6px;display:inline-block;margin-bottom:6px}
+.green{background:#2e7d32}
+.orange{background:#ef6c00}
+.red{background:#b71c1c}
+
+#map{height:240px;border-radius:12px;margin-top:10px}
 
 .small{color:#aaa;font-size:12px}
-
-.banner{
-background:#2e7d32;
-padding:10px;
-border-radius:10px;
-font-weight:bold;
-margin:10px 0;
-}
-
-.warning{
-background:#b71c1c;
-padding:10px;
-border-radius:10px;
-font-weight:bold;
-margin:10px 0;
-}
-
-#map{
-height:250px;
-border-radius:12px;
-margin-top:10px;
-}
 </style>
 </head>
 
 <body>
 
-<header>
-<h2>🚢 Cruise OS ELITE</h2>
-<p class="small">Safety • Energy • Navigation • Control</p>
-</header>
+<header>🚢 Cruise OS — Mediterranean Smart Guide</header>
 
 <div class="container">
 
-<div class="card" id="app">
-<h3>Select Port</h3>
-<p class="small">Elite decision system active</p>
-</div>
+<div class="card" id="app">Loading...</div>
 
-<button onclick="openPort(0)">Palma</button>
-<button onclick="openPort(1)">Ibiza</button>
-<button onclick="openPort(2)">Valencia</button>
-<button onclick="openPort(3)">Sea Day</button>
-<button onclick="openPort(4)">La Spezia</button>
-<button onclick="openPort(5)">Rome</button>
-<button onclick="openPort(6)">Savona</button>
+<button onclick="load('palma')">Palma</button>
+<button onclick="load('ibiza')">Ibiza</button>
+<button onclick="load('valencia')">Valencia</button>
+<button onclick="load('laspezia')">La Spezia</button>
+<button onclick="load('rome')">Rome</button>
+<button onclick="load('savona')">Savona</button>
 
 </div>
 
@@ -86,137 +60,133 @@ margin-top:10px;
 
 <script>
 
+/* 🚢 SHIP LOCATIONS */
 const ship = {
-0:[39.55,2.65],
-1:[38.91,1.42],
-2:[39.46,-0.32],
-3:[0,0],
-4:[44.10,9.82],
-5:[41.90,12.48],
-6:[44.30,8.46]
+palma:[39.55,2.65],
+ibiza:[38.91,1.42],
+valencia:[39.46,-0.32],
+laspezia:[44.10,9.82],
+rome:[41.90,12.48],
+savona:[44.30,8.46]
 };
 
-const data = [
-{
-name:"Palma",
-risk:2,
-energy:+2,
-time:"10:00 → 22:00",
-plan:"Old town + café + sunset",
-food:["La Bodeguilla","Ca'n Joan","Ombu"]
-},
-{
-name:"Ibiza",
-risk:5,
-energy:-3,
-time:"23:00 → 01:30",
-plan:"Party OR stay onboard (recommended)",
-food:["Hostal La Torre","Can Terra"]
-},
-{
-name:"Valencia",
-risk:2,
-energy:+1,
-time:"09:00 → 17:00",
-plan:"Old town + paella",
-food:["Casa Carmela","La Pepica"]
-},
-{
-name:"Sea Day",
-risk:0,
-energy:+5,
-time:"All day",
-plan:"Recovery only",
-food:["Buffet","Main dining"]
-},
-{
-name:"La Spezia",
-risk:4,
-energy:-2,
-time:"08:00 → 19:00",
-plan:"Max 2 Cinque Terre villages",
-food:["Focaccia spots","Il Papeoto"]
-},
-{
-name:"Rome",
-risk:5,
-energy:-4,
-time:"08:00 → 18:30",
-plan:"Pantheon + Navona ONLY",
-food:["Tazza d’Oro","Da Enzo"]
-},
-{
-name:"Savona",
-risk:1,
-energy:+3,
-time:"08:30 → 16:30",
-plan:"Light walk + coffee",
-food:["Farine","Caffè Savona"]
-}
-];
+/* 📍 FULL PORT DATA */
+const data = {
 
+palma:{
+name:"Palma de Mallorca",
+risk:"low",
+time:"10:00 → 22:00",
+img:"https://source.unsplash.com/800x500/?palma,mallorca",
+places:[
+{name:"Cathedral",img:"https://source.unsplash.com/400x300/?cathedral,spain",cost:"9€",ticket:"https://tickets.catedraldemallorca.org",coords:[39.5667,2.6483]},
+{name:"Old Town",img:"https://source.unsplash.com/400x300/?oldtown,spain",cost:"Free",ticket:"",coords:[39.569,2.650]},
+{name:"Beach Palma",img:"https://source.unsplash.com/400x300/?beach,spain",cost:"Free",ticket:"",coords:[39.53,2.74]}
+]
+},
+
+rome:{
+name:"Rome",
+risk:"high",
+time:"08:00 → 18:30",
+img:"https://source.unsplash.com/800x500/?rome,colosseum",
+places:[
+{name:"Colosseum",img:"https://source.unsplash.com/400x300/?colosseum",cost:"18€",ticket:"https://ticketing.colosseo.it",coords:[41.8902,12.4922]},
+{name:"Pantheon",img:"https://source.unsplash.com/400x300/?pantheon,rome",cost:"Free",ticket:"",coords:[41.8986,12.4768]},
+{name:"Navona",img:"https://source.unsplash.com/400x300/?piazza,rome",cost:"Free",ticket:"",coords:[41.8992,12.4731]}
+]
+},
+
+laspezia:{
+name:"La Spezia",
+risk:"medium",
+time:"08:00 → 19:00",
+img:"https://source.unsplash.com/800x500/?cinque-terre",
+places:[
+{name:"Monterosso",img:"https://source.unsplash.com/400x300/?cinque-terre",cost:"7–18€ train",ticket:"https://www.cinqueterre.eu.com",coords:[44.1465,9.6542]},
+{name:"Vernazza",img:"https://source.unsplash.com/400x300/?vernazza",cost:"train pass",ticket:"https://www.cinqueterre.eu.com",coords:[44.134,9.684]}
+]
+}
+
+};
+
+/* 🧭 LOAD PORT */
 let map;
 
-function openPort(i){
+function load(key){
 
-const p = data[i];
-
-let energyLevel =
-p.energy > 2 ? "🟢 Energy boost day"
-: p.energy < 0 ? "🔴 Energy drain day"
-: "🟡 Neutral day";
-
-let riskLevel =
-p.risk >= 4 ? "⚠️ High logistics risk"
-: "🟢 Safe port";
+const p = data[key];
 
 document.getElementById("app").innerHTML = `
+
+<div class="card">
+<span class="badge ${p.risk==='high'?'red':p.risk==='medium'?'orange':'green'}">
+${p.risk.toUpperCase()} RISK
+</span>
+
 <h2>${p.name}</h2>
+<p class="small">${p.time}</p>
 
-<div class="banner">${energyLevel}</div>
-<div class="warning">${riskLevel}</div>
+<img src="${p.img}">
 
-<p><b>Time:</b> ${p.time}</p>
+</div>
 
-<p>${p.plan}</p>
+<div class="card">
+<h3>📍 Places</h3>
 
+${p.places.map(pl=>`
+<div style="margin-bottom:10px">
+<img src="${pl.img}">
+<b>${pl.name}</b><br>
+💰 ${pl.cost}<br>
+
+<button onclick="window.open('${pl.ticket || 'https://www.google.com/maps/search/'+pl.name}','_blank')">
+🎟️ Open / Tickets
+</button>
+</div>
+`).join("")}
+
+</div>
+
+<div class="card">
+<h3>🗺️ Map</h3>
 <div id="map"></div>
+<button onclick="route(${key})">🚢 Route to ship</button>
+</div>
 
-<button onclick="routeToShip(${i})">🧭 Return to ship</button>
-
-<h4>🍴 Best food</h4>
-<ul>${p.food.map(f=>`<li>${f}</li>`).join("")}</ul>
 `;
 
-setTimeout(()=>initMap(i),100);
+setTimeout(()=>renderMap(key,p),100);
 }
 
-function initMap(i){
+function renderMap(key,p){
 
 if(map) map.remove();
 
-map = L.map('map').setView(ship[i], 13);
+map = L.map('map').setView(ship[key],12);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
 attribution:'© OpenStreetMap'
 }).addTo(map);
 
-L.marker(ship[i]).addTo(map)
-.bindPopup("🚢 Ship location")
-.openPopup();
+/* 🚢 ship */
+L.marker(ship[key]).addTo(map).bindPopup("🚢 Ship");
+
+/* 📍 POIs */
+p.places.forEach(pl=>{
+L.marker(pl.coords).addTo(map)
+.bindPopup(pl.name);
+});
+
 }
 
-function routeToShip(i){
-const [lat,lng]=ship[i];
-window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`,'_blank');
+function route(key){
+const [lat,lng]=ship[key];
+window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`);
 }
 
-</script>
+load("palma");
 
-<script>
-if('serviceWorker' in navigator){
-navigator.serviceWorker.register('sw.js');
-}
 </script>
 
 </body>
