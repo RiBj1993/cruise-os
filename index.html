@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Cruise OS App</title>
+<title>Cruise OS</title>
 
 <style>
 body{
@@ -21,9 +21,7 @@ font-weight:800;
 background:#111;
 }
 
-.container{
-padding:12px;
-}
+.container{padding:12px}
 
 .card{
 background:#151515;
@@ -35,27 +33,35 @@ cursor:pointer;
 
 .hidden{display:none}
 
-h2{margin:0 0 8px 0;font-size:18px}
-p{margin:4px 0;color:#aaa;font-size:13px}
+h2{margin:0 0 8px 0}
+p{color:#aaa;font-size:13px}
 
 button{
-padding:10px;
 width:100%;
+padding:10px;
 border:none;
 border-radius:10px;
 font-weight:700;
 margin-top:10px;
 }
-.back{
-background:#fff;
-color:#000;
+
+.back{background:#fff;color:#000}
+
+/* detail layout */
+.section{
+background:#151515;
+padding:12px;
+border-radius:12px;
+margin-top:10px;
 }
+
+a{color:#4fc3f7;text-decoration:none}
 </style>
 </head>
 
 <body>
 
-<header id="header">🚢 Cruise OS</header>
+<header>🚢 Cruise OS</header>
 
 <!-- HOME -->
 <div id="home" class="container">
@@ -67,7 +73,7 @@ color:#000;
 
 <div class="card" onclick="openPort('valencia')">
 <h2>Valencia</h2>
-<p>Paella • Arts City • old town</p>
+<p>Paella • City of Arts • old town</p>
 </div>
 
 <div class="card" onclick="openPort('rome')">
@@ -77,75 +83,106 @@ color:#000;
 
 <div class="card" onclick="openPort('laspezia')">
 <h2>La Spezia</h2>
-<p>Cinque Terre • train villages</p>
-</div>
-
-<div class="card" onclick="openPort('savona')">
-<h2>Savona</h2>
-<p>Relax • cafés • slow walk</p>
+<p>Cinque Terre • trains • villages</p>
 </div>
 
 </div>
 
-<!-- PORT VIEW -->
-<div id="portView" class="container hidden">
-
-<h2 id="portTitle"></h2>
-<p id="portDesc"></p>
+<!-- DETAIL VIEW -->
+<div id="detail" class="container hidden">
 
 <button class="back" onclick="backHome()">← Back</button>
+
+<h2 id="title"></h2>
+<p id="desc"></p>
+
+<div class="section">
+<h3>🍽 Recommended Food</h3>
+<p id="food"></p>
+</div>
+
+<div class="section">
+<h3>🗺 Maps</h3>
+<a id="map" target="_blank">Open Google Maps</a>
+</div>
+
+<div class="section">
+<h3>🎟 Tickets</h3>
+<a id="ticket" target="_blank">Buy / View Tickets</a>
+</div>
+
+<div class="section">
+<h3>⏱ Timing Plan</h3>
+<p id="time"></p>
+</div>
 
 </div>
 
 <script>
 
-// 🌍 DATA LAYER (REAL APP STATE)
-const ports = {
+const data = {
+
 palma:{
 title:"Palma de Mallorca",
-desc:"Old town, cafés, tapas, beaches. Relaxed energy day."
+desc:"Relaxed port with old town + cafés + beach options.",
+food:"Ca'n Joan de S'Aigo (pastries) • La Bodeguilla (tapas)",
+map:"https://www.google.com/maps/search/palma+old+town",
+ticket:"https://tickets-viator.com/palma",
+time:"09:30 leave → 13:30 return buffer 2h minimum"
 },
+
 valencia:{
 title:"Valencia",
-desc:"Paella capital, City of Arts, old town walking route."
+desc:"Balanced day: food + architecture + walking.",
+food:"Casa Carmela (paella) • Mercat Central (local food)",
+map:"https://www.google.com/maps/search/valencia+city+of+arts",
+ticket:"https://tickets-viator.com/valencia",
+time:"09:00 leave → 14:30 return"
 },
+
 rome:{
 title:"Rome",
-desc:"High intensity day. Colosseum, Pantheon, Vatican option."
+desc:"High intensity. Only 2–3 major stops possible.",
+food:"Armando al Pantheon • Trastevere pasta",
+map:"https://www.google.com/maps/search/rome+colosseum",
+ticket:"https://tickets-viator.com/rome-colosseum",
+time:"07:30 leave → 15:30 strict return buffer"
 },
+
 laspezia:{
-title:"La Spezia",
-desc:"Gateway to Cinque Terre. Train-based logistics required."
-},
-savona:{
-title:"Savona",
-desc:"Calm recovery stop. Minimal planning needed."
+title:"La Spezia / Cinque Terre",
+desc:"Train-based logistics. Risk of delays.",
+food:"Seafood cones Monterosso • Vernazza restaurants",
+map:"https://www.google.com/maps/search/cinque+terre",
+ticket:"https://www.italiarail.com/cinque-terre",
+time:"08:30 leave → 13:30 return (NO RISK BUFFER NEEDED)"
 }
+
 };
 
-// 🧠 ROUTER STATE
-let currentPort = null;
+// OPEN PORT
+function openPort(p){
 
-// 🔁 OPEN PORT
-function openPort(port){
-
-currentPort = port;
+const d = data[p];
 
 document.getElementById("home").classList.add("hidden");
-document.getElementById("portView").classList.remove("hidden");
+document.getElementById("detail").classList.remove("hidden");
 
-document.getElementById("portTitle").innerText = ports[port].title;
-document.getElementById("portDesc").innerText = ports[port].desc;
+document.getElementById("title").innerText = d.title;
+document.getElementById("desc").innerText = d.desc;
+
+document.getElementById("food").innerText = d.food;
+document.getElementById("map").href = d.map;
+document.getElementById("ticket").href = d.ticket;
+document.getElementById("time").innerText = d.time;
 
 window.scrollTo(0,0);
 }
 
-// 🔙 BACK
+// BACK
 function backHome(){
-currentPort = null;
-
 document.getElementById("home").classList.remove("hidden");
-document.getElementById("portView").classList.add("hidden");
+document.getElementById("detail").classList.add("hidden");
 }
 
 </script>
