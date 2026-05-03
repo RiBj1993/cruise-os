@@ -4,35 +4,115 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Cruise OS v3 — Data System</title>
+<title>Cruise OS v3 — Shore Guide</title>
 
 <style>
-body{margin:0;font-family:system-ui;background:#0b0b0b;color:#fff}
-header{padding:14px;text-align:center;font-weight:800;background:#111}
-.container{padding:12px}
-
-.card{background:#151515;padding:12px;border-radius:12px;margin-bottom:10px;cursor:pointer}
-
+body{
+  margin:0;
+  font-family:system-ui, sans-serif;
+  background:#070707;
+  color:#f3f3f3;
+}
+header{
+  padding:18px 12px;
+  text-align:center;
+  font-weight:900;
+  background:linear-gradient(180deg,#111,#1a1a1a);
+  box-shadow:inset 0 -1px 0 rgba(255,255,255,.05);
+}
+.container{
+  padding:14px;
+  max-width:760px;
+  margin:0 auto;
+}
+.card{
+  background:#121212;
+  padding:16px;
+  border-radius:18px;
+  margin-bottom:14px;
+  cursor:pointer;
+  transition:transform .16s ease, background .16s ease;
+}
+.card:hover{
+  transform:translateY(-2px);
+  background:#1e1e1e;
+}
 .hidden{display:none}
-
-.section{background:#151515;padding:12px;border-radius:12px;margin-top:10px}
-
-.badge{font-size:11px;padding:3px 8px;border-radius:6px;display:inline-block}
-.low{background:#2e7d32}
-.med{background:#ef6c00}
-.high{background:#b71c1c}
-
-a{color:#4fc3f7;text-decoration:none}
-button{width:100%;padding:10px;border:none;border-radius:10px;margin-top:10px;font-weight:700}
-.back{background:#fff;color:#000}
-
-.row{margin-top:6px;color:#aaa;font-size:13px}
+.section{
+  background:#151515;
+  padding:16px;
+  border-radius:16px;
+  margin-top:14px;
+}
+.section h3{
+  margin:0 0 10px;
+  font-size:1rem;
+}
+.section p,
+.section ul{
+  margin:0;
+  color:#d7d7d7;
+  line-height:1.6;
+}
+.section ul{
+  padding-left:20px;
+}
+a,
+a.button-link{
+  color:#67d0ff;
+  text-decoration:none;
+}
+a.button-link{
+  display:inline-block;
+  margin-top:10px;
+  background:#4fc3f7;
+  color:#000;
+  padding:10px 14px;
+  border-radius:12px;
+  font-weight:700;
+}
+a.button-link:hover{
+  background:#6ed7ff;
+}
+button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  margin-top:12px;
+  font-weight:700;
+  background:#f1f1f1;
+  color:#000;
+  cursor:pointer;
+}
+button.back{
+  background:#222;
+  color:#fff;
+}
+.row{
+  margin-top:8px;
+  color:#b0b0b0;
+  font-size:.96rem;
+}
+.list-item{
+  margin:8px 0;
+}
+.badge{
+  display:inline-block;
+  padding:5px 10px;
+  border-radius:999px;
+  font-size:11px;
+  background:#222;
+  color:#cbd5e0;
+  margin-right:8px;
+  margin-bottom:8px;
+}
 </style>
 </head>
 
 <body>
 
-<header>🚢 Cruise OS v3 — Structured Engine</header>
+<header>🚢 Cruise OS v3 — Shore Guide</header>
 
 <div id="home" class="container"></div>
 
@@ -44,7 +124,12 @@ button{width:100%;padding:10px;border:none;border-radius:10px;margin-top:10px;fo
 <p id="desc"></p>
 
 <div class="section">
-<h3>⏱ Timeline Logic</h3>
+<h3>✨ What to do</h3>
+<p id="activities"></p>
+</div>
+
+<div class="section">
+<h3>⏱ Timeline</h3>
 <p id="timeline"></p>
 </div>
 
@@ -54,121 +139,163 @@ button{width:100%;padding:10px;border:none;border-radius:10px;margin-top:10px;fo
 </div>
 
 <div class="section">
-<h3>🎟 Ticket Logic</h3>
-<p id="tickets"></p>
+<h3>🎫 Tickets & links</h3>
+<ul id="tickets" class="list"></ul>
 </div>
 
 <div class="section">
-<h3>🍽 Food Strategy</h3>
-<p id="food"></p>
+<h3>🍽 Recommended restaurants</h3>
+<ul id="food" class="list"></ul>
 </div>
 
 <div class="section">
-<h3>💰 Budget Estimate</h3>
+<h3>💰 Budget</h3>
 <p id="budget"></p>
 </div>
 
 <div class="section">
-<h3>⚠ Safety Return Rule</h3>
+<h3>⚠ Tip</h3>
 <p id="safety"></p>
 </div>
 
 <div class="section">
 <h3>🗺 Map</h3>
-<a id="map" target="_blank">Open Location</a>
+<a id="map" class="button-link" target="_blank">Open location in Google Maps</a>
 </div>
 
 </div>
 
 <script>
-
 const ports = {
+  palma: {
+    title: "Palma de Mallorca",
+    desc: "Compact seaside city with cathedral views, old town cafés and a relaxed rhythm.",
+    activities: "Explore the old town, visit La Seu cathedral, walk the marina and relax at Portixol beach.",
+    timeline: "Leave port by 09:30 and target 18:30 return with a one-hour buffer.",
+    transport: "Walk 10-15 minutes to the old town. A taxi to the cathedral or beach costs €8-€12.",
+    tickets: [
+      {label: "La Seu Cathedral ticket", href: "https://www.catedralpalma.es/en", price: "€12"},
+      {label: "Es Baluard Museum", href: "https://www.esbaluard.org/en/", price: "€10"}
+    ],
+    food: [
+      {name: "La Bodeguilla", href: "https://www.google.com/search?q=La+Bodeguilla+Palma", price: "€18-€30", note: "Tapas and seafood in the old town."},
+      {name: "Ca'n Joan de S'Aigo", href: "https://www.google.com/search?q=Can+Joan+de+SAigo", price: "€8-€15", note: "Best for ensaimadas and hot chocolate."},
+      {name: "Ombu", href: "https://www.google.com/search?q=Ombu+Palma", price: "€20-€35", note: "Creative Mediterranean plates by the harbor."}
+    ],
+    budget: "€35-€60 total for transport, a meal and one attraction.",
+    safety: "Low risk. Keep a two-hour buffer before departure and follow port transfer times.",
+    map: "https://www.google.com/maps/search/Palma+de+Mallorca+old+town"
+  },
 
-palma:{
-title:"Palma de Mallorca",
-desc:"Low-stress cultural + seaside port.",
-timeline:"Leave 09:30 → return buffer 20:00 latest",
-transport:"Walk + taxi optional (10–15 min from port)",
-tickets:"No mandatory tickets (optional cathedral €9)",
-food:"Tapas old town (€20–40) | Café culture focus",
-budget:"€30–60 total",
-safety:"Return 2h before departure (low risk port)",
-map:"https://www.google.com/maps?q=Palma+old+town"
-},
+  valencia: {
+    title: "Valencia",
+    desc: "Modern architecture, great market food and a relaxed seaside atmosphere.",
+    activities: "Visit the City of Arts and Sciences, explore Central Market, then enjoy paella near the beach.",
+    timeline: "Leave port by 09:00, return between 15:30 and 16:00 to avoid lines.",
+    transport: "Train or bus to the city center takes 20-25 minutes. Metro rides are about €2.80 each way.",
+    tickets: [
+      {label: "City of Arts & Sciences", href: "https://www.cac.es/en/home.html", price: "€10-€25"},
+      {label: "Oceanogràfic aquarium", href: "https://www.oceanografic.org/en/", price: "€30-€35"}
+    ],
+    food: [
+      {name: "Casa Carmela", href: "https://www.casadomela.com", price: "€25-€40", note: "Classic paella near the beach."},
+      {name: "Central Bar", href: "https://www.google.com/search?q=Central+Bar+Mercado+Central+Valencia", price: "€15-€25", note: "Tapas inside the historic market."},
+      {name: "Horchatería Santa Catalina", href: "https://www.google.com/search?q=Horchateria+Santa+Catalina", price: "€5-€10", note: "Local horchata and sweet snacks."}
+    ],
+    budget: "€45-€85 including transport, a meal and one main attraction.",
+    safety: "Moderate risk. Avoid late returns and keep the boarding pass visible for port access.",
+    map: "https://www.google.com/maps/search/Valencia+City+of+Arts+and+Sciences"
+  },
 
-valencia:{
-title:"Valencia",
-desc:"Balanced architecture + food city.",
-timeline:"Leave 09:00 → return 15:30–16:00",
-transport:"Taxi or metro (~20 min city access)",
-tickets:"City of Arts optional (€10–€25)",
-food:"Paella (€25–€40) near beach or central market",
-budget:"€40–€80",
-safety:"Moderate risk → avoid late return",
-map:"https://www.google.com/maps?q=Valencia+City+of+Arts"
-},
+  rome: {
+    title: "Rome (Civitavecchia)",
+    desc: "Iconic history in a fast-paced shore day — only if you want the big landmarks.",
+    activities: "Start at the Colosseum, walk the Roman Forum, then finish with lunch in Trastevere.",
+    timeline: "Train arrives around 08:30; be back on the 15:30 port shuttle for a safe return.",
+    transport: "Train to Roma Termini takes 1h15. Use taxis only if you fall behind schedule.",
+    tickets: [
+      {label: "Colosseum & Roman Forum", href: "https://www.coopculture.it/en/ticket_office.cfm", price: "€18-€25"},
+      {label: "Vatican Museums", href: "https://www.museivaticani.va/content/museivaticani/en.html", price: "€17-€30"}
+    ],
+    food: [
+      {name: "Tazza d'Oro", href: "https://www.google.com/search?q=Tazza+d'Oro+Rome", price: "€5-€12", note: "Legendary coffee near the Pantheon."},
+      {name: "Da Enzo al 29", href: "https://www.google.com/search?q=Da+Enzo+al+29+Trastevere", price: "€20-€35", note: "Classic Roman trattoria."},
+      {name: "Pastificio Guerra", href: "https://www.google.com/search?q=Pastificio+Guerra", price: "€6-€10", note: "Fast takeaway pasta by the Spanish Steps."}
+    ],
+    budget: "€60-€100 depending on train, tickets and lunch.",
+    safety: "High risk. No delay tolerance — if trains are late, take the next port shuttle immediately.",
+    map: "https://www.google.com/maps/search/Colosseum+Rome"
+  },
 
-rome:{
-title:"Rome (Civitavecchia)",
-desc:"High intensity historical mega-city.",
-timeline:"07:30 leave → 15:30 strict return",
-transport:"Train (1h15 each way, €5–€10)",
-tickets:"Colosseum required (€18–€25, PREBOOK only)",
-food:"Trastevere lunch (€20–€35)",
-budget:"€60–€100",
-safety:"HIGH RISK: zero delay tolerance",
-map:"https://www.google.com/maps?q=Colosseum+Rome"
-},
-
-laspezia:{
-title:"La Spezia / Cinque Terre",
-desc:"Train-based coastal villages.",
-timeline:"08:30 leave → 13:30 return buffer",
-transport:"Regional train (€18–€25 pass)",
-tickets:"Cinque Terre train pass required",
-food:"Street seafood (€10–€25)",
-budget:"€40–€70",
-safety:"Medium risk (train delays possible)",
-map:"https://www.google.com/maps?q=Cinque+Terre"
-}
-
+  laspezia: {
+    title: "La Spezia / Cinque Terre",
+    desc: "Scenic coastal villages connected by train — great for a relaxed, photo-friendly day.",
+    activities: "Take the train to Riomaggiore, walk between a village or two, and enjoy seafood with a view.",
+    timeline: "Leave port by 08:30 and return by 13:30 to avoid afternoon train congestion.",
+    transport: "Regional train pass costs €18-€25 and covers multiple Cinque Terre stops.",
+    tickets: [
+      {label: "Cinque Terre Train Pass", href: "https://www.cinqueterre.eu.com/en/cinqueterre-card-train", price: "€18-€25"},
+      {label: "Cinque Terre ferry", href: "https://www.cinqueterre.eu.com/en/boat", price: "€8-€15"}
+    ],
+    food: [
+      {name: "Panificio Mario", href: "https://www.google.com/search?q=Panificio+Mario+Manarola", price: "€6-€12", note: "Focaccia and local pastries."},
+      {name: "Belforte", href: "https://www.google.com/search?q=Belforte+Vernazza", price: "€25-€45", note: "Sea-view seafood in Vernazza."},
+      {name: "Il Pescato Cucinato", href: "https://www.google.com/search?q=Il+Pescato+Cucinato+Manarola", price: "€15-€25", note: "Quick seafood plates by the harbor."}
+    ],
+    budget: "€40-€70 including train pass, a meal and snacks.",
+    safety: "Medium risk. Train delays are common, so choose the earliest return train.",
+    map: "https://www.google.com/maps/search/Cinque+Terre"
+  }
 };
 
-// render home
 const home=document.getElementById("home");
 
 Object.keys(ports).forEach(k=>{
-const p=ports[k];
-home.innerHTML+=`
-<div class="card" onclick="openPort('${k}')">
-<b>${p.title}</b>
-<div class="row">${p.desc}</div>
-</div>`;
+  const p=ports[k];
+  home.innerHTML += `
+    <div class="card" onclick="openPort('${k}')">
+      <b>${p.title}</b>
+      <div class="row">${p.desc}</div>
+    </div>`;
 });
 
+function renderList(elementId, items, type) {
+  const container = document.getElementById(elementId);
+  if (!items || !items.length) {
+    container.innerHTML = '<li class="list-item">No details available.</li>';
+    return;
+  }
+  container.innerHTML = items.map(item => {
+    if (type === 'tickets') {
+      return `<li class="list-item"><a href="${item.href}" target="_blank">${item.label}</a> — ${item.price}</li>`;
+    }
+    return `<li class="list-item"><a href="${item.href}" target="_blank">${item.name}</a> — ${item.price}<br><small style="color:#aaa">${item.note}</small></li>`;
+  }).join('');
+}
+
 function openPort(k){
-const p=ports[k];
+  const p=ports[k];
 
-document.getElementById("home").classList.add("hidden");
-document.getElementById("detail").classList.remove("hidden");
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("detail").classList.remove("hidden");
 
-document.getElementById("title").innerText=p.title;
-document.getElementById("desc").innerText=p.desc;
-document.getElementById("timeline").innerText=p.timeline;
-document.getElementById("transport").innerText=p.transport;
-document.getElementById("tickets").innerText=p.tickets;
-document.getElementById("food").innerText=p.food;
-document.getElementById("budget").innerText=p.budget;
-document.getElementById("safety").innerText=p.safety;
-document.getElementById("map").href=p.map;
+  document.getElementById("title").innerText=p.title;
+  document.getElementById("desc").innerText=p.desc;
+  document.getElementById("activities").innerText=p.activities;
+  document.getElementById("timeline").innerText=p.timeline;
+  document.getElementById("transport").innerText=p.transport;
+  renderList("tickets", p.tickets, 'tickets');
+  renderList("food", p.food, 'food');
+  document.getElementById("budget").innerText=p.budget;
+  document.getElementById("safety").innerText=p.safety;
+  document.getElementById("map").href=p.map;
 }
 
 function back(){
-document.getElementById("detail").classList.add("hidden");
-document.getElementById("home").classList.remove("hidden");
+  document.getElementById("detail").classList.add("hidden");
+  document.getElementById("home").classList.remove("hidden");
 }
 
 </script>
-
 </body>
 </html>
