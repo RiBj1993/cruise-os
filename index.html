@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Cruise OS - Mediterranean</title>
+<title>Cruise OS Dashboard</title>
 
 <style>
 body{
@@ -18,7 +18,7 @@ header{
 padding:18px;
 text-align:center;
 font-size:18px;
-font-weight:700;
+font-weight:800;
 background:#111;
 }
 
@@ -60,14 +60,14 @@ padding:12px;
 
 .title{
 font-size:16px;
-font-weight:700;
+font-weight:800;
 margin-bottom:4px;
 }
 
 .meta{
 font-size:12px;
 color:#aaa;
-margin-bottom:10px;
+margin-bottom:8px;
 }
 
 .badge{
@@ -82,6 +82,12 @@ margin-bottom:6px;
 .medium{background:#ef6c00}
 .high{background:#b71c1c}
 
+.small{
+font-size:11px;
+color:#777;
+margin-top:4px;
+}
+
 button{
 width:100%;
 padding:10px;
@@ -89,14 +95,14 @@ border:none;
 border-radius:10px;
 background:#fff;
 color:#000;
-font-weight:600;
+font-weight:700;
 }
 
 .footer{
 text-align:center;
 font-size:11px;
 color:#666;
-padding:10px;
+padding:12px;
 }
 </style>
 </head>
@@ -104,84 +110,90 @@ padding:10px;
 <body>
 
 <header>🚢 Cruise OS</header>
-<div class="sub">Mediterranean Execution Dashboard</div>
+<div class="sub">Execution Dashboard — Ports • Maps • Food • Tickets</div>
 
 <div class="container">
 
 <!-- PALMA -->
-<div class="card" onclick="openPort('palma')">
-<img src="https://source.unsplash.com/800x500/?mallorca,palma,sea">
+<div class="card" onclick="go('palma')">
+<img src="https://picsum.photos/800/400?mallorca">
 <div class="content">
 <div class="badge low">LOW RISK • RELAXED</div>
 <div class="title">Palma de Mallorca</div>
-<div class="meta">Old Town • Cathedral • Cafés • Beach option</div>
-<button>Open Port Plan</button>
+<div class="meta">🏛️ Old town • ☕ cafés • 🍽️ tapas • 🏖️ beach option</div>
+<div class="small">Avg budget: 30–80€ • Food: 20–50€</div>
+<button>Open Full Plan</button>
 </div>
 </div>
 
 <!-- IBIZA -->
-<div class="card" onclick="openPort('ibiza')">
-<img src="https://source.unsplash.com/800x500/?ibiza,night,party">
+<div class="card" onclick="go('ibiza')">
+<img src="https://picsum.photos/800/400?ibiza">
 <div class="content">
-<div class="badge medium">NIGHT STOP • CONTROLLED RISK</div>
-<div class="title">Ibiza (Night Stop)</div>
-<div class="meta">Optional nightlife • energy decision point</div>
-<button>Open Port Plan</button>
+<div class="badge medium">NIGHT STOP</div>
+<div class="title">Ibiza</div>
+<div class="meta">🌙 Optional nightlife • ⚠ energy decision point</div>
+<div class="small">Food limited • mostly onboard recommended</div>
+<button>Open Full Plan</button>
 </div>
 </div>
 
 <!-- VALENCIA -->
-<div class="card" onclick="openPort('valencia')">
-<img src="https://source.unsplash.com/800x500/?valencia,city,architecture">
+<div class="card" onclick="go('valencia')">
+<img src="https://picsum.photos/800/400?valencia">
 <div class="content">
-<div class="badge medium">MEDIUM RISK • ACTIVE DAY</div>
+<div class="badge medium">ACTIVE DAY</div>
 <div class="title">Valencia</div>
-<div class="meta">City of Arts • Paella • Old town</div>
-<button>Open Port Plan</button>
+<div class="meta">🏛️ City of Arts • 🍚 paella • 🏙️ old town</div>
+<div class="small">Food: 20–60€ • Tickets: 10–30€</div>
+<button>Open Full Plan</button>
 </div>
 </div>
 
 <!-- LA SPEZIA -->
-<div class="card" onclick="openPort('laspezia')">
-<img src="https://source.unsplash.com/800x500/?cinque-terre,italy,coast">
+<div class="card" onclick="go('laspezia')">
+<img src="https://picsum.photos/800/400?cinque-terre">
 <div class="content">
 <div class="badge high">HIGH LOGISTICS RISK</div>
-<div class="title">La Spezia (Cinque Terre)</div>
-<div class="meta">Train-based • scenic but time-sensitive</div>
-<button>Open Port Plan</button>
+<div class="title">La Spezia</div>
+<div class="meta">🚆 Cinque Terre • 🌊 scenic villages • ⚠ train dependency</div>
+<div class="small">Food: 20–40€ • Transport: 20–35€</div>
+<button>Open Full Plan</button>
 </div>
 </div>
 
 <!-- ROME -->
-<div class="card" onclick="openPort('rome')">
-<img src="https://source.unsplash.com/800x500/?rome,colosseum,italy">
+<div class="card" onclick="go('rome')">
+<img src="https://picsum.photos/800/400?rome">
 <div class="content">
 <div class="badge high">HIGH INTENSITY</div>
 <div class="title">Rome (Civitavecchia)</div>
-<div class="meta">Colosseum • Pantheon • strict timing</div>
-<button>Open Port Plan</button>
+<div class="meta">🏛️ Colosseum • ⛪ Pantheon • ⚠ strict timing</div>
+<div class="small">Food: 20–50€ • Tickets: 18–25€</div>
+<button>Open Full Plan</button>
 </div>
 </div>
 
 <!-- SAVONA -->
-<div class="card" onclick="openPort('savona')">
-<img src="https://source.unsplash.com/800x500/?savona,italy,sea">
+<div class="card" onclick="go('savona')">
+<img src="https://picsum.photos/800/400?savona">
 <div class="content">
-<div class="badge low">LOW STRESS • RECOVERY DAY</div>
+<div class="badge low">RECOVERY DAY</div>
 <div class="title">Savona</div>
-<div class="meta">Relax • café • seaside walk</div>
-<button>Open Port Plan</button>
+<div class="meta">☕ cafés • 🌊 seaside walk • 🧘 slow pace</div>
+<div class="small">Food: 15–40€ • No major tickets</div>
+<button>Open Full Plan</button>
 </div>
 </div>
 
 </div>
 
 <div class="footer">
-Tap a port → full maps, tickets, timing & budget plan
+Tap a port → full maps • food • tickets • timing • return safety
 </div>
 
 <script>
-function openPort(port){
+function go(port){
 window.location.href="port.html?port="+port;
 }
 </script>
